@@ -12,11 +12,13 @@ connection = pymysql.connect(host='localhost',
                             db='Chinook')
 
 try:
-    #Run a query
+    # Run a query
     with connection.cursor() as cursor:
-         row = ("Bob", 21, "1990-02-06 23.04.56")         
-         cursor.execute("INSERT INTO Friends VALUES (%s, %s, %s);", row)
-         connection.commit()
+        list_of_names = ['Fred','Fred']
+        # Prepare a string with the same number of placeholders as in list_of_names
+        format_strings = ",".join(['%s']*len(list_of_names))
+        cursor.execute("DELETE FROM Friends WHERE Name in ({})".format(format_strings), list_of_names)
+        connection.commit()
 finally:
     # Close connection, regardless of whether the above was successful
     connection.close()
